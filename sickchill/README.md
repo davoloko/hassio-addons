@@ -1,3 +1,5 @@
+Thanks to @alexbelgium https://github.com/alexbelgium/hassio-addons, I have used his code to create this addon
+
 # Home assistant add-on: sickchill
 
 ![Supports 
