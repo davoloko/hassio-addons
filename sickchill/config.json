@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "slug": "sickchill_nas",
   "description": "An automatic Video Library Manager for TV Shows",
-  "url": "https://github.com/davolokillo/hassio-addons/tree/master/sickchill",
+  "url": "https://github.com/davoloko/hassio-addons/tree/master/sickchill",
   "apparmor": true,
   "arch": [
     "aarch64",
