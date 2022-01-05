@@ -1,0 +1,8 @@
+{
+  "build_from": {
+    "armhf": "linuxserver/sickchill:arm32v7-latest",
+    "armv7": "linuxserver/sickchill:arm32v7-latest",
+    "aarch64": "linuxserver/sickchill:arm64v8-latest",
+    "amd64": "linuxserver/sickchill:amd64-latest"
+  }
+}
