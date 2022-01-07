@@ -1,6 +1,6 @@
 {
   "name": "Sickchill NAS",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "slug": "sickchill_nas",
   "description": "An automatic Video Library Manager for TV Shows",
   "url": "https://github.com/davoloko/hassio-addons/tree/master/sickchill",
@@ -12,8 +12,8 @@
     "armhf"
   ],
   "boot": "auto",
-  "upstream": "0.0.1",
-  "webui": "http://[HOST]:[PORT:8081]",
+  "upstream": "0.0.2",
+  "webui": "http://[HOST]:[PORT:8089]",
   "startup": "services",
   "backup_exclude": [
     "**/Backups/*",
@@ -57,7 +57,7 @@
     "PGID": "0"
   },
   "ingress": true,
-  "ingress_port": 8081,
+  "ingress_port": 8089,
   "map": [
     "config:rw",
     "share:rw",
@@ -69,7 +69,7 @@
     "PGID": 0
   },
   "ports": {
-    "8081/tcp": 8081
+    "8081/tcp": 8089
   },
   "ports_description": {
     "8081/tcp": "web interface"
