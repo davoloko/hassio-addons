@@ -56,7 +56,7 @@
     "PUID": "0",
     "PGID": "0"
   },
-  "ingress": false,
+  "ingress": true,
   "map": [
     "config:rw",
     "share:rw",
