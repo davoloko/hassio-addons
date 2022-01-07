@@ -56,8 +56,7 @@
     "PUID": "0",
     "PGID": "0"
   },
-  "ingress": true,
-  "ingress_port": 8089,
+  "ingress": false,
   "map": [
     "config:rw",
     "share:rw",
