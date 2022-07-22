@@ -1,3 +1,7 @@
+## 0.0.6 (22-07-2022)
+
+- Add init: false
+
 ## 0.0.5 (22-07-2022)
 
 - Update to latest sickchill version
