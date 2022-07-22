@@ -1,4 +1,4 @@
-## 0.0.4 (22-07-2022)
+## 0.0.5 (22-07-2022)
 
 - Update to latest sickchill version
 
