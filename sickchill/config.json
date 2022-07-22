@@ -57,6 +57,7 @@
     "PGID": "0"
   },
   "ingress": false,
+  "init": false,
   "map": [
     "config:rw",
     "share:rw",
