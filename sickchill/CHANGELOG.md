@@ -1,3 +1,7 @@
+## 0.0.8(15-04-2023)
+
+- Update to latest sickchill version
+
 ## 0.0.7(22-08-2022)
 
 - Update to latest sickchill version
