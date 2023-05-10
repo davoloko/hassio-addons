@@ -69,17 +69,17 @@
     "PGID": 0
   },
   "ports": {
-    "4711/tcp": 4711
-    "4712/tcp": 4712
-    "4662/tcp": 4662
-    "4665/udp": 4665
+    "4711/tcp": 4711,
+    "4712/tcp": 4712,
+    "4662/tcp": 4662,
+    "4665/udp": 4665,
     "4672/udp": 4672
   },
   "ports_description": {
-    "4711/tcp": "web interface"
-    "4712/tcp": "remote gui, webserver, cmd..."
-    "4662/tcp": "ed2k tcp"
-    "4665/udp": "ed2k global search udp (tcp port +3)"
+    "4711/tcp": "web interface",
+    "4712/tcp": "remote gui, webserver, cmd...",
+    "4662/tcp": "ed2k tcp",
+    "4665/udp": "ed2k global search udp (tcp port +3)",
     "4672/udp": "ed2k udp"
   },
   "privileged": [
