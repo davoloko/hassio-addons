@@ -1,9 +1,9 @@
 {
-  "name": "Sickchill NAS",
-  "version": "0.0.8",
-  "slug": "sickchill_nas",
-  "description": "An automatic Video Library Manager for TV Shows",
-  "url": "https://github.com/davoloko/hassio-addons/tree/master/sickchill",
+  "name": "aMule",
+  "version": "0.0.1",
+  "slug": "amule",
+  "description": "aMule is a multi-platform client for the ED2K file sharing network and based on the windows client eMule.",
+  "url": "https://github.com/davoloko/hassio-addons/tree/master/amule",
   "apparmor": true,
   "arch": [
     "aarch64",
@@ -12,8 +12,8 @@
     "armhf"
   ],
   "boot": "auto",
-  "upstream": "0.0.8",
-  "webui": "http://[HOST]:[PORT:8089]",
+  "upstream": "0.0.1",
+  "webui": "http://[HOST]:[PORT:4711]",
   "startup": "services",
   "backup_exclude": [
     "**/Backups/*",
@@ -69,10 +69,18 @@
     "PGID": 0
   },
   "ports": {
-    "8081/tcp": 8089
+    "4711/tcp": 4711
+    "4712/tcp": 4712
+    "4662/tcp": 4662
+    "4665/udp": 4665
+    "4672/udp": 4672
   },
   "ports_description": {
-    "8081/tcp": "web interface"
+    "4711/tcp": "web interface"
+    "4712/tcp": "remote gui, webserver, cmd..."
+    "4662/tcp": "ed2k tcp"
+    "4665/udp": "ed2k global search udp (tcp port +3)"
+    "4672/udp": "ed2k udp"
   },
   "privileged": [
     "SYS_ADMIN",
