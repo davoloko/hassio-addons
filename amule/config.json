@@ -87,9 +87,9 @@
     "4672/udp": 4672
   },
   "ports_description": {
-    "4711": "web ui",
-    "4712": "remote gui, webserver, cmd ...",
-    "4662": "ed2k tcp",
+    "4711/tcp": "web ui",
+    "4712/tcp": "remote gui, webserver, cmd ...",
+    "4662/tcp": "ed2k tcp",
     "4665/udp": "ed2k global search udp (tcp port +3)",
     "4672/udp": "ed2k udp"
   },
