@@ -1,8 +1,0 @@
-{
-  "build_from": {
-    "armhf": "ngosang/amule:latest",
-    "armv7": "ngosang/amule:latest",
-    "aarch64": "ngosang/amule:latest",
-    "amd64": "ngosang/amule:latest"
-  }
-}
