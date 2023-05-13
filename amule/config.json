@@ -1,7 +1,7 @@
 {
   "name": "Amule",
   "version": "0.0.0",
-  "slug": "Amule",
+  "slug": "amule",
   "description": "aMule add-on",
   "url": "https://github.com/davoloko/hassio-addons/tree/master/amule",
   "apparmor": true,
