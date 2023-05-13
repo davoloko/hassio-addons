@@ -14,7 +14,7 @@
   ],
   "boot": "auto",
   "upstream": "0.0.8",
-  "webui": "http://[HOST]:4711",
+  "webui": "http://[HOST]:[PORT:4711]",
   "startup": "services",
   "backup_exclude": [
     "**/Backups/*",
