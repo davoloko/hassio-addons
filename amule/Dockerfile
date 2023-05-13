@@ -1,5 +1,47 @@
-FROM alpine:edge as builder
-WORKDIR /tmp
+#============================#
+#  ALEXBELGIUM'S DOCKERFILE  #
+#============================#
+#           _.------.
+#       _.-`    ('>.-`"""-.
+# '.--'`       _'`   _ .--.)
+#    -'         '-.-';`   `
+#    ' -      _.'  ``'--.
+#        '---`    .-'""`
+#               /`
+#=== Home Assistant Addon ===#
+
+#################
+# 1 Build Image #
+#################
+
+ARG BUILD_VERSION
+ARG BUILD_FROM
+ARG BUILD_UPSTREAM="latest"
+FROM ngosang/amule:$BUILD_UPSTREAM
+
+##################
+# 2 Modify Image #
+##################
+
+# Set S6 wait time
+ENV S6_CMD_WAIT_FOR_SERVICES=1 \
+    S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
+    S6_SERVICES_GRACETIME=0
+
+# Install Joal
+# spellcheck disable=SC2015
+# hadolint ignore=SC2015,DL4006
+#RUN \
+#    if ! command -v curl >/dev/null 2>/dev/null; then (apt-get update && apt-get install -yqq --no-install-recommends curl || apk add --no-cache curl); fi \
+#    && curl -f -s -S -J -L -o /tmp/joal.tar.gz "$(curl -f -s https://api.github.com/repos/anthonyraymond/joal/releases/latest | grep -o "http.*joal.tar.gz")" >/dev/null \
+#    && mkdir -p /data/joal \
+#    && tar zxvf /tmp/joal.tar.gz -C /data/joal >/dev/null \
+#    && chown -R "$(id -u)":"$(id -g)" /data/joal \
+#    && rm /data/joal/jack-of* || true
+
+##################
+# 3 Install apps #
+##################
 
 # Add rootfs
 COPY rootfs/ /
@@ -9,52 +51,77 @@ RUN if [ -d /etc/cont-init.d ]; then chmod -R 755 /etc/cont-init.d; fi && \
     if [ -d /etc/services.d ]; then chmod -R 755 /etc/services.d; fi && \
     if [ -f /entrypoint.sh ]; then chmod 755 /entrypoint.sh; fi
 
-# Install aMule
-RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing amule amule-doc
+# Manual apps
+ENV PACKAGES="jq \
+    nginx"
 
-# Install a modern Web UI
-RUN AMULEWEBUI_RELOADED_COMMIT=1a85ead05e26202de8d98af4248189a869a24795 && \
-    cd /usr/share/amule/webserver && \
-    wget -O AmuleWebUI-Reloaded.zip https://github.com/MatteoRagni/AmuleWebUI-Reloaded/archive/${AMULEWEBUI_RELOADED_COMMIT}.zip && \
-    unzip AmuleWebUI-Reloaded.zip && \
-    mv AmuleWebUI-Reloaded-* AmuleWebUI-Reloaded && \
-    rm -rf AmuleWebUI-Reloaded.zip AmuleWebUI-Reloaded/doc-images AmuleWebUI-Reloaded/README.md
+# Automatic apps & bashio
+# hadolint ignore=SC2015
+RUN if ! command -v bash >/dev/null 2>/dev/null; then (apt-get update && apt-get install -yqq --no-install-recommends bash || apk add --no-cache bash) >/dev/null; fi \
+    && if ! command -v curl >/dev/null 2>/dev/null; then (apt-get update && apt-get install -yqq --no-install-recommends curl || apk add --no-cache curl) >/dev/null; fi \
+    && curl -f -L -s -S "https://raw.githubusercontent.com/alexbelgium/hassio-addons/master/.templates/automatic_packages.sh" --output /automatic_packages.sh \
+    && chmod 777 /automatic_packages.sh \
+    && eval /./automatic_packages.sh "${PACKAGES:-}" \
+    && rm /automatic_packages.sh
 
-FROM alpine:edge
+# Modules
+ARG MODULES="00-banner.sh 01-custom_script.sh"
 
-LABEL maintainer="ngosang@hotmail.es"
+# Automatic modules download
+RUN if ! command -v bash >/dev/null 2>/dev/null; then (apt-get update && apt-get install -yqq --no-install-recommends bash || apk add --no-cache bash) >/dev/null; fi \
+    && if ! command -v curl >/dev/null 2>/dev/null; then (apt-get update && apt-get install -yqq --no-install-recommends curl || apk add --no-cache curl) >/dev/null; fi \
+    && apt-get update && apt-get install -yqq --no-install-recommends ca-certificates || apk add --no-cache ca-certificates >/dev/null || true \
+    && mkdir -p /etc/cont-init.d \
+    && for scripts in $MODULES; do echo "$scripts" && curl -f -L -s -S "https://raw.githubusercontent.com/alexbelgium/hassio-addons/master/.templates/$scripts" -o /etc/cont-init.d/"$scripts" && [ "$(sed -n '/\/bin/p;q' /etc/cont-init.d/"$scripts")" != "" ] || (echo "script failed to install $scripts" && exit 1); done \
+    && chmod -R 755 /etc/cont-init.d
 
-# Install packages
-RUN apk add --no-cache libedit libgcc libintl libpng libstdc++ libupnp musl wxwidgets zlib tzdata pwgen mandoc curl && \
-    apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing crypto++
+################
+# 4 Entrypoint #
+################
 
-# Copy binaries and Man doc
-COPY --from=builder /usr/bin/alcc /usr/bin/amulecmd /usr/bin/amuled /usr/bin/amuleweb /usr/bin/ed2k /usr/bin/
-COPY --from=builder /usr/share/amule /usr/share/amule
-COPY --from=builder /usr/share/man/man1/alcc.1.gz /usr/share/man/man1/amulecmd.1.gz /usr/share/man/man1/amuled.1.gz /usr/share/man/man1/amuleweb.1.gz /usr/share/man/man1/ed2k.1.gz /usr/share/man/man1/
-
-# Check binaries are OK
-RUN ldd /usr/bin/alcc && \
-    ldd /usr/bin/amulecmd && \
-    ldd /usr/bin/amuled && \
-    ldd /usr/bin/amuleweb && \
-    ldd /usr/bin/ed2k
-
-# Add entrypoint
 RUN chmod 777 /entrypoint.sh
-COPY /entrypoint.sh /home/amule/entrypoint.sh
 ENTRYPOINT [ "/usr/bin/env" ]
-CMD [ "/home/amule/entrypoint.sh" ]
+CMD [ "/entrypoint.sh" ]
 
-WORKDIR /home/amule
+############
+# 5 Labels #
+############
 
-EXPOSE 4711/tcp 4712/tcp 4662/tcp 4665/udp 4672/udp
+ARG BUILD_ARCH
+ARG BUILD_DATE
+ARG BUILD_DESCRIPTION
+ARG BUILD_NAME
+ARG BUILD_REF
+ARG BUILD_REPOSITORY
+ARG BUILD_VERSION
+LABEL \
+    io.hass.name="${BUILD_NAME}" \
+    io.hass.description="${BUILD_DESCRIPTION}" \
+    io.hass.arch="${BUILD_ARCH}" \
+    io.hass.type="addon" \
+    io.hass.version=${BUILD_VERSION} \
+    maintainer="alexbelgium (https://github.com/alexbelgium)" \
+    org.opencontainers.image.title="${BUILD_NAME}" \
+    org.opencontainers.image.description="${BUILD_DESCRIPTION}" \
+    org.opencontainers.image.vendor="Home Assistant Add-ons" \
+    org.opencontainers.image.authors="alexbelgium (https://github.com/alexbelgium)" \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.url="https://github.com/alexbelgium" \
+    org.opencontainers.image.source="https://github.com/${BUILD_REPOSITORY}" \
+    org.opencontainers.image.documentation="https://github.com/${BUILD_REPOSITORY}/blob/main/README.md" \
+    org.opencontainers.image.created=${BUILD_DATE} \
+    org.opencontainers.image.revision=${BUILD_REF} \
+    org.opencontainers.image.version=${BUILD_VERSION}
 
-# HELP
-#
-# => Build Docker image
-# docker build -t ngosang/amule:test .
-#
-# => Reference Alpine packages
-# https://git.alpinelinux.org/aports/tree/testing/amule
+#################
+# 6 Healthcheck #
+#################
 
+ENV HEALTH_PORT="8081" \
+    HEALTH_URL="/joal/ui"
+HEALTHCHECK \
+    --interval=5s \
+    --retries=5 \
+    --start-period=30s \
+    --timeout=25s \
+    CMD curl --fail "http://127.0.0.1:${HEALTH_PORT}${HEALTH_URL}" &>/dev/null || exit 1
