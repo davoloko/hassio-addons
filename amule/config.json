@@ -57,8 +57,8 @@
     "PUID": "1000",
     "PGID": "1000",
     "TZ": "Europe/Madrid",
-    "GUI_PWD": "<fill_password>",
-    "WEBUI_PWD": "<fill_password>",
+    "GUI_PWD": "fill_password",
+    "WEBUI_PWD": "fill_password",
     "MOD_AUTO_RESTART_ENABLED": "true",
     "MOD_AUTO_RESTART_CRON": "0 6 * * *",
     "MOD_AUTO_SHARE_ENABLED": "false",
@@ -74,10 +74,10 @@
     "ssl"
   ],
   "options": {
-    "PUID": 0,
-    "PGID": 0,
+    "PUID": 1000,
+    "PGID": 1000,
     "TZ": "Europe/Madrid",
-    "GUI_PWD": "<fill_password>"
+    "GUI_PWD": "fill_password"
   },
   "ports": {
     "4711/tcp": 4711,
