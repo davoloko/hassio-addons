@@ -101,6 +101,7 @@
     "PUID": "int",
     "PGID": "int",
     "TZ": "str?",
+    "GUI_PWD": "str?",
     "networkdisks": "str?",
     "cifsusername": "str?",
     "cifspassword": "str?"
