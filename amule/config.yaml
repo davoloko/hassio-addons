@@ -12,7 +12,7 @@ arch:
   - amd64
   - i386
 init: false
-webui: http://[HOST]:4711
+webui: "http://[HOST]:4711"
 startup: services
 ingress: false
 map:
@@ -21,16 +21,16 @@ map:
   - media:rw
   - ssl
 options: {
-  PUID: 1000,
-  PGID: 1000,
-  TZ: Europe/Madrid,
-  GUI_PWD: <fill_password>,
-  WEBUI_PWD: <fill_password>,
-  MOD_AUTO_RESTART_ENABLED: true,
-  MOD_AUTO_RESTART_CRON: 0 6 * * *,
-  MOD_AUTO_SHARE_ENABLED: false,
-  MOD_AUTO_SHARE_DIRECTORIES: /incoming;/my_movies,
-  MOD_FIX_KAD_GRAPH_ENABLED: true,
+  "PUID": 1000,
+  "PGID": 1000,
+  "TZ": Europe/Madrid,
+  "GUI_PWD": "<fill_password>",
+  "WEBUI_PWD": "<fill_password>",
+  "MOD_AUTO_RESTART_ENABLED": true,
+  "MOD_AUTO_RESTART_CRON": "0 6 * * *",
+  "MOD_AUTO_SHARE_ENABLED": false,
+  "MOD_AUTO_SHARE_DIRECTORIES": "/incoming;/my_movies",
+  "MOD_FIX_KAD_GRAPH_ENABLED": true,
 }
 ports: {
   "4711": 4711,
