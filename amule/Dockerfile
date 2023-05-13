@@ -35,12 +35,13 @@ RUN ldd /usr/bin/alcc && \
 
 # Add entrypoint
 COPY entrypoint.sh /home/amule/entrypoint.sh
+RUN chmod 777 /home/amule/entrypoint.sh
+ENTRYPOINT [ "/usr/bin/env" ]
+CMD [ "/home/amule/entrypoint.sh" ]
 
 WORKDIR /home/amule
 
 EXPOSE 4711/tcp 4712/tcp 4662/tcp 4665/udp 4672/udp
-
-ENTRYPOINT ["/home/amule/entrypoint.sh"]
 
 # HELP
 #
