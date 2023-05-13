@@ -1,6 +1,13 @@
 FROM alpine:edge as builder
-
 WORKDIR /tmp
+
+# Add rootfs
+COPY rootfs/ /
+
+# Corrects permissions for s6 v3
+RUN if [ -d /etc/cont-init.d ]; then chmod -R 755 /etc/cont-init.d; fi && \
+    if [ -d /etc/services.d ]; then chmod -R 755 /etc/services.d; fi && \
+    if [ -f /entrypoint.sh ]; then chmod 755 /entrypoint.sh; fi
 
 # Install aMule
 RUN apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing amule amule-doc
@@ -34,8 +41,8 @@ RUN ldd /usr/bin/alcc && \
     ldd /usr/bin/ed2k
 
 # Add entrypoint
-COPY entrypoint.sh /home/amule/entrypoint.sh
-RUN chmod 777 /home/amule/entrypoint.sh
+RUN chmod 777 /entrypoint.sh
+COPY /entrypoint.sh /home/amule/entrypoint.sh
 ENTRYPOINT [ "/usr/bin/env" ]
 CMD [ "/home/amule/entrypoint.sh" ]
 
