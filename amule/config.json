@@ -64,6 +64,7 @@
     "MOD_AUTO_SHARE_ENABLED": "false",
     "MOD_AUTO_SHARE_DIRECTORIES": "/incoming;/my_movies",
     "MOD_FIX_KAD_GRAPH_ENABLED": "true"
+    "INCOMING": "/share"
   },
   "ingress": false,
   "init": false,
