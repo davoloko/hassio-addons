@@ -1,7 +1,0 @@
-# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
-build_from:
-  aarch64: "ngosang/amule:latest"
-  amd64: "ngosang/amule:latest"
-  armhf: "ngosang/amule:latest"
-  armv7: "ngosang/amule:latest"
-  i386: "ngosang/amule:latest"
